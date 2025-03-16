@@ -19,6 +19,7 @@
             border-radius: 8px;
             padding: 20px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
         h1 {
             color: #166fe5;
@@ -153,10 +154,20 @@
                 grid-template-columns: 1fr;
             }
         }
+        .game-button {
+            background-color: #ff66aa;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+        }
+        .game-button:hover {
+            background-color: #ff4499;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <a href="/" class="game-button button">Play Game</a>
         <h1>Email Settings</h1>
         
         <div class="info-box">
@@ -246,10 +257,6 @@ name3,email3@example.com"></textarea>
             <textarea id="message-templates" rows="10" placeholder="Add one message per line"></textarea>
             <button id="save-templates">Save Templates</button>
             <div id="templates-status" class="status" style="display: none;"></div>
-        </div>
-        
-        <div class="navigation">
-            <a href="/">Back to Game</a>
         </div>
     </div>
 

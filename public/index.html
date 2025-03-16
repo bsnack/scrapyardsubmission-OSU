@@ -5,8 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Osu! Clone</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .nav-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #ff66aa;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 1000;
+            transition: background-color 0.2s;
+        }
+        .nav-button:hover {
+            background-color: #ff4499;
+        }
+    </style>
 </head>
 <body>
+    <a href="/settings" class="nav-button">Settings</a>
+    
     <div id="game-container">
         <div class="score-display">Score: <span id="score">0</span></div>
         <div class="combo-display">Combo: <span id="combo">0</span>x</div>
