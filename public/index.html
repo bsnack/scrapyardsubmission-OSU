@@ -63,38 +63,102 @@
     </div>
 
     <script src="script.js"></script>
-    <!-- Custom cursor implementation -->
-    <div id="osu-cursor" style="position: fixed; width: 30px; height: 30px; border: 2px solid white; border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 9999;"></div>
-    <div id="osu-cursor-dot" style="position: fixed; width: 6px; height: 6px; background-color: white; border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10000;"></div>
+<!-- Enhanced OSU-style cursor with animations -->
+    <div id="osu-cursor-trail" style="position: fixed; width: 36px; height: 36px; border: 2px solid rgba(255, 255, 255, 0.6); border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 9997; transition: transform 0.12s ease-out, width 0.1s, height 0.1s;"></div>
+    <div id="osu-cursor" style="position: fixed; width: 30px; height: 30px; border: 2px solid white; border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 9998; transition: width 0.08s, height 0.08s;"></div>
+    <div id="osu-cursor-dot" style="position: fixed; width: 6px; height: 6px; background-color: white; border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 9999; box-shadow: 0 0 4px white;"></div>
+    <div id="osu-cursor-ripple" style="position: fixed; width: 30px; height: 30px; border: 2px solid rgba(255, 120, 200, 0.8); border-radius: 50%; transform: translate(-50%, -50%) scale(0); pointer-events: none; z-index: 9996; opacity: 0; transition: transform 0.3s ease-out, opacity 0.3s;"></div>
 
     <script>
     (function() {
         // Get cursor elements
         const cursor = document.getElementById('osu-cursor');
         const cursorDot = document.getElementById('osu-cursor-dot');
+        const cursorTrail = document.getElementById('osu-cursor-trail');
+        const cursorRipple = document.getElementById('osu-cursor-ripple');
+        
+        // Mouse position tracking
+        let mouseX = 0;
+        let mouseY = 0;
+        let trailX = 0;
+        let trailY = 0;
         
         // Track mouse movement
         document.addEventListener('mousemove', function(e) {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
+        mouseX = e.clientX;
+        mouseY = e.clientY;
         
-        cursorDot.style.left = e.clientX + 'px';
-        cursorDot.style.top = e.clientY + 'px';
+        // Update main cursor and dot immediately
+        cursorDot.style.left = mouseX + 'px';
+        cursorDot.style.top = mouseY + 'px';
+        cursor.style.left = mouseX + 'px';
+        cursor.style.top = mouseY + 'px';
         });
+        
+        // Animate trail with smooth following
+        function animateTrail() {
+        // Interpolate trail position for smooth following
+        trailX += (mouseX - trailX) * 0.3;
+        trailY += (mouseY - trailY) * 0.3;
+        
+        cursorTrail.style.left = trailX + 'px';
+        cursorTrail.style.top = trailY + 'px';
+        
+        requestAnimationFrame(animateTrail);
+        }
+        animateTrail();
         
         // Hide default cursor
         document.body.style.cursor = 'none';
+        const style = document.createElement('style');
+        style.textContent = '* {cursor: none !important;}';
+        document.head.appendChild(style);
         
         // Click effect
-        document.addEventListener('mousedown', function() {
-        cursor.style.width = '26px';
-        cursor.style.height = '26px';
+        document.addEventListener('mousedown', function(e) {
+        // Shrink main cursor
+        cursor.style.width = '24px';
+        cursor.style.height = '24px';
+        
+        // Create ripple effect
+        cursorRipple.style.left = e.clientX + 'px';
+        cursorRipple.style.top = e.clientY + 'px';
+        cursorRipple.style.opacity = '1';
+        cursorRipple.style.transform = 'translate(-50%, -50%) scale(2.5)';
+        
+        setTimeout(function() {
+            cursorRipple.style.opacity = '0';
+            cursorRipple.style.transform = 'translate(-50%, -50%) scale(0)';
+        }, 300);
         });
         
         document.addEventListener('mouseup', function() {
+        // Return to normal size
         cursor.style.width = '30px';
         cursor.style.height = '30px';
         });
+        
+        // Add pulse animation for trail
+        let scale = 1.0;
+        let increasing = false;
+        
+        function pulseTrail() {
+        if (increasing) {
+            scale += 0.003;
+            if (scale >= 1.1) {
+            increasing = false;
+            }
+        } else {
+            scale -= 0.003;
+            if (scale <= 0.9) {
+            increasing = true;
+            }
+        }
+        
+        cursorTrail.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        requestAnimationFrame(pulseTrail);
+        }
+        pulseTrail();
     })();
     </script>
 </body>
