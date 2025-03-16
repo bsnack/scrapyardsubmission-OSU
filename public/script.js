@@ -88,42 +88,31 @@ const difficultySettings = {
 };
 
 // Main document ready handler - SINGLE unified handler
+// Main document ready handler - SINGLE unified handler
 document.addEventListener('DOMContentLoaded', function() {
-    // Create the cursor elements
-    const cursor = document.createElement('div');
-    cursor.classList.add('custom-cursor');
+    console.log("DOM loaded, initializing game...");
     
-    const cursorDot = document.createElement('div');
-    cursorDot.classList.add('cursor-dot');
+    // Detect device type first
+    detectTouchDevice();
     
-    // Add the cursor elements to the document
-    document.body.appendChild(cursor);
-    document.body.appendChild(cursorDot);
+    // Fix difficulty buttons
+    fixDifficultyButtons();
     
-    // Hide the default cursor
-    document.body.style.cursor = 'none';
-    document.querySelectorAll('button, a').forEach(el => {
-        el.style.cursor = 'none';
-    });
+    // Set up all event listeners
+    setupEventListeners();
     
-    // Update cursor position on mousemove
-    document.addEventListener('mousemove', function(e) {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
-        
-        cursorDot.style.left = e.clientX + 'px';
-        cursorDot.style.top = e.clientY + 'px';
-    });
+    // Add keyboard instructions to menu
+    addKeyboardInstructions();
     
-    // Add click animation effect
-    document.addEventListener('mousedown', function() {
-        cursor.classList.add('cursor-active');
-    });
+    // Add input type option to menu
+    setTimeout(addInputOptionToMenu, 100);
     
-    document.addEventListener('mouseup', function() {
-        cursor.classList.remove('cursor-active');
-    });
+    // Add background music
+    addBrunoMarsMusic();
+    
+    console.log("Game initialization complete");
 });
+
 // Setup all event listeners
 function setupEventListeners() {
     console.log("Setting up all event listeners");
@@ -3051,160 +3040,3 @@ function addBrunoMarsMusic() {
         // playButton.innerHTML = '🔈';
     };
 }
-// Add this code to your script.js file
-
-// Create and add custom cursor
-function addCustomCursor() {
-    // Create cursor container
-    const cursorContainer = document.createElement('div');
-    cursorContainer.id = 'custom-cursor-container';
-    cursorContainer.style.position = 'fixed';
-    cursorContainer.style.top = '0';
-    cursorContainer.style.left = '0';
-    cursorContainer.style.width = '100%';
-    cursorContainer.style.height = '100%';
-    cursorContainer.style.pointerEvents = 'none';
-    cursorContainer.style.zIndex = '1000';
-    cursorContainer.style.overflow = 'hidden';
-    
-    // Create outer cursor (trail)
-    const cursorTrail = document.createElement('div');
-    cursorTrail.id = 'cursor-trail';
-    cursorTrail.style.position = 'absolute';
-    cursorTrail.style.width = '30px';
-    cursorTrail.style.height = '30px';
-    cursorTrail.style.borderRadius = '50%';
-    cursorTrail.style.border = '2px solid rgba(255, 255, 255, 0.7)';
-    cursorTrail.style.transform = 'translate(-50%, -50%)';
-    cursorTrail.style.pointerEvents = 'none';
-    cursorTrail.style.transition = 'transform 0.1s ease-out, opacity 0.2s ease-out';
-    cursorTrail.style.opacity = '0.7';
-    
-    // Create inner cursor (main dot)
-    const cursorDot = document.createElement('div');
-    cursorDot.id = 'cursor-dot';
-    cursorDot.style.position = 'absolute';
-    cursorDot.style.width = '6px';
-    cursorDot.style.height = '6px';
-    cursorDot.style.borderRadius = '50%';
-    cursorDot.style.backgroundColor = '#ffffff';
-    cursorDot.style.transform = 'translate(-50%, -50%)';
-    cursorDot.style.pointerEvents = 'none';
-    cursorDot.style.boxShadow = '0 0 5px rgba(255, 255, 255, 0.8)';
-    
-    // Add cursors to container
-    cursorContainer.appendChild(cursorTrail);
-    cursorContainer.appendChild(cursorDot);
-    
-    // Add to body
-    document.body.appendChild(cursorContainer);
-    
-    // Hide default cursor
-    document.body.style.cursor = 'none';
-    
-    // Add cursor click animation
-    const cursorClick = document.createElement('div');
-    cursorClick.id = 'cursor-click';
-    cursorClick.style.position = 'absolute';
-    cursorClick.style.width = '40px';
-    cursorClick.style.height = '40px';
-    cursorClick.style.borderRadius = '50%';
-    cursorClick.style.border = '2px solid rgba(255, 102, 170, 0.8)';
-    cursorClick.style.transform = 'translate(-50%, -50%) scale(0.5)';
-    cursorClick.style.opacity = '0';
-    cursorClick.style.pointerEvents = 'none';
-    cursorContainer.appendChild(cursorClick);
-    
-    // Track mouse movement
-    document.addEventListener('mousemove', (e) => {
-        // Update cursor positions
-        cursorDot.style.left = e.clientX + 'px';
-        cursorDot.style.top = e.clientY + 'px';
-        
-        // Trail follows with slight delay
-        setTimeout(() => {
-            cursorTrail.style.left = e.clientX + 'px';
-            cursorTrail.style.top = e.clientY + 'px';
-        }, 50);
-    });
-    
-    // Track mouse button state
-    document.addEventListener('mousedown', (e) => {
-        // Shrink trail on click
-        cursorTrail.style.transform = 'translate(-50%, -50%) scale(0.8)';
-        
-        // Show click animation
-        cursorClick.style.left = e.clientX + 'px';
-        cursorClick.style.top = e.clientY + 'px';
-        cursorClick.style.transition = 'transform 0.3s ease-out, opacity 0.3s ease-out';
-        cursorClick.style.opacity = '1';
-        cursorClick.style.transform = 'translate(-50%, -50%) scale(1.5)';
-        
-        setTimeout(() => {
-            cursorClick.style.opacity = '0';
-            cursorClick.style.transform = 'translate(-50%, -50%) scale(0.5)';
-        }, 300);
-    });
-    
-    document.addEventListener('mouseup', () => {
-        // Return trail to normal size
-        cursorTrail.style.transform = 'translate(-50%, -50%) scale(1)';
-    });
-    
-    // Make sure cursor is visible in special elements
-    const elements = document.querySelectorAll('.menu, button, .nav-button');
-    elements.forEach(element => {
-        element.style.cursor = 'none';
-    });
-    
-    // Toggle cursor visibility based on game state
-    function updateCursorVisibility() {
-        // Show cursor in menus/buttons, hide when playing if keyboard mode
-        const isPlaying = gameStarted && !gameEnded;
-        const isKeyboardMode = lastInputType === 'keyboard';
-        
-        if (isPlaying && isKeyboardMode) {
-            cursorContainer.style.opacity = '0.3'; // Dim cursor in keyboard mode while playing
-        } else {
-            cursorContainer.style.opacity = '1';
-        }
-    }
-    
-    // Check game state periodically to update cursor
-    setInterval(updateCursorVisibility, 500);
-    
-    // Create a toggle button for cursor visibility
-    const toggleButton = document.createElement('button');
-    toggleButton.id = 'cursor-toggle';
-    toggleButton.textContent = 'Toggle Cursor';
-    toggleButton.style.position = 'absolute';
-    toggleButton.style.bottom = '10px';
-    toggleButton.style.left = '10px';
-    toggleButton.style.zIndex = '1001';
-    toggleButton.style.padding = '5px 10px';
-    toggleButton.style.backgroundColor = '#ff66aa';
-    toggleButton.style.color = 'white';
-    toggleButton.style.border = 'none';
-    toggleButton.style.borderRadius = '5px';
-    toggleButton.style.fontSize = '12px';
-    
-    let cursorVisible = true;
-    toggleButton.addEventListener('click', () => {
-        cursorVisible = !cursorVisible;
-        if (!cursorVisible) {
-            cursorContainer.style.display = 'none';
-            document.body.style.cursor = 'auto';
-        } else {
-            cursorContainer.style.display = 'block';
-            document.body.style.cursor = 'none';
-        }
-    });
-    
-    document.body.appendChild(toggleButton);
-}
-
-// Call this function after the DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    // Add this line to your existing DOMContentLoaded handler
-    setTimeout(addCustomCursor, 500); // Slight delay to ensure everything else is initialized
-});
