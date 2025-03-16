@@ -592,6 +592,39 @@ name3,email3@example.com"></textarea>
             }, 5000);
         }
     </script>
-    <script src="cursor.js"></script>
+    <!-- Custom cursor implementation -->
+    <div id="osu-cursor" style="position: fixed; width: 30px; height: 30px; border: 2px solid white; border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 9999;"></div>
+    <div id="osu-cursor-dot" style="position: fixed; width: 6px; height: 6px; background-color: white; border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10000;"></div>
+
+    <script>
+    (function() {
+        // Get cursor elements
+        const cursor = document.getElementById('osu-cursor');
+        const cursorDot = document.getElementById('osu-cursor-dot');
+        
+        // Track mouse movement
+        document.addEventListener('mousemove', function(e) {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+        
+        cursorDot.style.left = e.clientX + 'px';
+        cursorDot.style.top = e.clientY + 'px';
+        });
+        
+        // Hide default cursor
+        document.body.style.cursor = 'none';
+        
+        // Click effect
+        document.addEventListener('mousedown', function() {
+        cursor.style.width = '26px';
+        cursor.style.height = '26px';
+        });
+        
+        document.addEventListener('mouseup', function() {
+        cursor.style.width = '30px';
+        cursor.style.height = '30px';
+        });
+    })();
+    </script>
 </body>
 </html>
