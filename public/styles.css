@@ -1,0 +1,248 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    color: white;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    user-select: none;
+}
+
+#game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+    cursor: default;
+}
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-sizing: border-box;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    pointer-events: none;
+    z-index: 10;
+}
+.end-circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-sizing: border-box;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 10;
+}
+
+.approach-circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    box-sizing: border-box;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9;
+}
+
+.hit-circle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 11;
+}
+
+/* Slider styles */
+.slider-path {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.3);
+    stroke-linecap: round;
+}
+
+.slider-ball {
+    position: absolute;
+    border-radius: 50%;
+    border: 3px solid white;
+    background-color: rgba(255, 255, 255, 0.2);
+    box-sizing: border-box;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    z-index: 15;
+    pointer-events: none;
+}
+
+.score-display {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    color: white;
+    z-index: 100;
+    text-align: right;
+}
+
+.combo-display {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    font-size: 20px;
+    color: white;
+    z-index: 100;
+    text-align: right;
+}
+
+.accuracy-display {
+    position: absolute;
+    top: 100px;
+    right: 20px;
+    font-size: 18px;
+    color: white;
+    z-index: 100;
+    text-align: right;
+}
+
+.hit-feedback {
+    position: absolute;
+    font-size: 24px;
+    font-weight: bold;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 100;
+    animation: fadeOut 0.5s forwards;
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translate(-50%, -50%); }
+    to { opacity: 0; transform: translate(-50%, -70%); }
+}
+
+.hit-300 { color: #6ff; }
+.hit-100 { color: #6f6; }
+.hit-50 { color: #fc6; }
+.hit-miss { color: #f66; }
+
+.menu {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+    z-index: 200;
+    width: 300px;
+}
+
+.menu h1 {
+    margin-top: 0;
+    color: #ff66aa;
+    font-size: 28px;
+}
+
+.menu p {
+    margin-bottom: 20px;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+.menu button {
+    background-color: #ff66aa;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin: 5px;
+}
+
+.menu button:hover {
+    background-color: #ff4499;
+}
+
+.difficulty-selector {
+    margin-bottom: 20px;
+}
+
+.difficulty-selector button {
+    background-color: #444;
+    font-size: 16px;
+    padding: 8px 15px;
+}
+
+.difficulty-selector button.selected {
+    background-color: #ff66aa;
+}
+
+.results {
+    margin-top: 30px;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.grade {
+    font-size: 64px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.grade-s { color: gold; }
+.grade-a { color: #6f6; }
+.grade-b { color: #6cf; }
+.grade-c { color: #f99; }
+.grade-d { color: #f66; }
+/* Add these to your existing styles.css file */
+.approach-circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    box-sizing: border-box;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9;
+    opacity: 1;
+}
+
+.hit-feedback {
+    position: absolute;
+    font-size: 24px;
+    font-weight: bold;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 100;
+    animation: fadeOut 0.5s forwards;
+    text-shadow: 0px 0px 3px #000;
+}
+
+.hit-300 { 
+    color: #6ff; 
+    font-size: 28px;
+}
+.hit-100 { 
+    color: #6f6; 
+    font-size: 26px;
+}
+.hit-50 { 
+    color: #fc6; 
+    font-size: 24px;
+}
+.hit-miss { 
+    color: #f66; 
+    font-size: 22px;
+}

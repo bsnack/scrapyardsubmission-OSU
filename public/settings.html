@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Settings - Osu! Clone</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #1c1e21;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #166fe5;
+            text-align: center;
+            margin-top: 0;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e4e6eb;
+        }
+        .section {
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .section h2 {
+            margin-top: 0;
+            color: #1877f2;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #1c1e21;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="email"], input[type="password"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #dddfe2;
+            background-color: #ffffff;
+            color: #1c1e21;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #166fe5;
+        }
+        button.remove {
+            background-color: #e41e3f;
+        }
+        button.remove:hover {
+            background-color: #d41536;
+        }
+        .email-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .email-item {
+            background-color: #f9f9f9;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #dddfe2;
+        }
+        .email-name {
+            font-weight: bold;
+            color: #1c1e21;
+        }
+        .email-address {
+            color: #65676b;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .navigation {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .navigation a {
+            color: #1877f2;
+            text-decoration: none;
+        }
+        .navigation a:hover {
+            text-decoration: underline;
+        }
+        .status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #e7f3ff;
+            color: #166fe5;
+            border: 1px solid #ccdfff;
+        }
+        .error {
+            background-color: #ffebe8;
+            color: #e41e3f;
+            border: 1px solid #ffc7c1;
+        }
+        .info-box {
+            background-color: #e7f3ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #ccdfff;
+        }
+        .info-box h3 {
+            margin-top: 0;
+            color: #166fe5;
+        }
+        .test-btn {
+            background-color: #42b72a;
+        }
+        .test-btn:hover {
+            background-color: #36a420;
+        }
+        .caution {
+            font-size: 0.85em;
+            color: #65676b;
+            margin-top: 5px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        @media (max-width: 600px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Email Settings</h1>
+        
+        <div class="info-box">
+            <h3>Email Integration Setup</h3>
+            <p>
+                Configure your email settings to send notifications when you miss a note in your Osu! game.
+                All recipients will receive an email whenever you miss.
+            </p>
+        </div>
+        
+        <div class="section">
+            <h2>Email Service Settings</h2>
+            <p>Enter your email credentials to send notifications from your account:</p>
+            <form id="email-settings-form">
+                <div class="grid">
+                    <div>
+                        <label for="email-service">Email Service:</label>
+                        <select id="email-service" required>
+                            <option value="gmail">Gmail</option>
+                            <option value="outlook">Outlook</option>
+                            <option value="yahoo">Yahoo</option>
+                            <option value="mailgun">Mailgun</option>
+                            <option value="sendgrid">SendGrid</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="email-user">Your Email Address:</label>
+                        <input type="email" id="email-user" placeholder="your.email@example.com" required>
+                    </div>
+                </div>
+                
+                <label for="email-pass">Password or App Password:</label>
+                <input type="password" id="email-pass" placeholder="Your password or app password" required>
+                <div class="caution">
+                    <strong>Note:</strong> For Gmail, you'll need to use an "App Password" instead of your regular password.
+                    <a href="https://support.google.com/accounts/answer/185833" target="_blank">Learn how to create one</a>
+                </div>
+                
+                <button type="submit">Save Email Settings</button>
+                <button type="button" class="test-btn" id="test-btn">Test Email Settings</button>
+            </form>
+            <div id="email-settings-status" class="status" style="display: none;"></div>
+        </div>
+        
+        <div class="section">
+            <h2>Add Recipient</h2>
+            <form id="recipient-form">
+                <div class="grid">
+                    <div>
+                        <label for="recipient-name">Name:</label>
+                        <input type="text" id="recipient-name" placeholder="Friend's name" required>
+                    </div>
+                    <div>
+                        <label for="recipient-email">Email Address:</label>
+                        <input type="email" id="recipient-email" placeholder="friend@example.com" required>
+                    </div>
+                </div>
+                
+                <button type="submit">Add Recipient</button>
+            </form>
+            <div id="recipient-status" class="status" style="display: none;"></div>
+        </div>
+        
+        <div class="section">
+            <h2>Recipients List</h2>
+            <ul id="email-list" class="email-list">
+                <li>Loading recipients...</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>Add Multiple Recipients</h2>
+            <p>Add multiple pre-consented contacts at once:</p>
+            <form id="bulk-recipient-form">
+                <textarea id="bulk-emails" rows="5" placeholder="name1,email1@example.com
+name2,email2@example.com
+name3,email3@example.com"></textarea>
+                <p class="caution">Format: one contact per line, with name and email separated by a comma</p>
+                <button type="submit">Add Recipients</button>
+            </form>
+            <div id="bulk-status" class="status" style="display: none;"></div>
+        </div>
+        
+        <div class="section">
+            <h2>Message Templates</h2>
+            <p>Edit these messages that will be sent when you miss a note:</p>
+            <textarea id="message-templates" rows="10" placeholder="Add one message per line"></textarea>
+            <button id="save-templates">Save Templates</button>
+            <div id="templates-status" class="status" style="display: none;"></div>
+        </div>
+        
+        <div class="navigation">
+            <a href="/">Back to Game</a>
+        </div>
+    </div>
+
+    <script>
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadEmails();
+            loadEmailSettings();
+            loadMessageTemplates();
+            
+            // Set up form submissions
+            document.getElementById('email-settings-form').addEventListener('submit', saveEmailSettings);
+            document.getElementById('recipient-form').addEventListener('submit', addRecipient);
+            document.getElementById('bulk-recipient-form').addEventListener('submit', addBulkRecipients);
+            document.getElementById('test-btn').addEventListener('click', testEmailSettings);
+            document.getElementById('save-templates').addEventListener('click', saveMessageTemplates);
+        });
+        
+        async function loadEmails() {
+            try {
+                console.log("Fetching emails from server...");
+                const response = await fetch('/api/emails');
+                console.log("Response received:", response);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error: ${response.status}`);
+                }
+                
+                const emails = await response.json();
+                console.log("Parsed emails:", emails);
+                
+                const listElement = document.getElementById('email-list');
+                
+                if (emails.length === 0) {
+                    listElement.innerHTML = '<li>No recipients added yet.</li>';
+                    return;
+                }
+                
+                listElement.innerHTML = '';
+                
+                emails.forEach((email, index) => {
+                    const item = document.createElement('li');
+                    item.className = 'email-item';
+                    
+                    item.innerHTML = `
+                        <div>
+                            <div class="email-name">${email.name}</div>
+                            <div class="email-address">${email.address}</div>
+                        </div>
+                        <button class="remove" data-index="${index}">Remove</button>
+                    `;
+                    
+                    listElement.appendChild(item);
+                });
+                
+                // Add event listeners for remove buttons
+                document.querySelectorAll('.remove').forEach(button => {
+                    button.addEventListener('click', removeEmail);
+                });
+                
+            } catch (error) {
+                console.error('Error loading emails:', error);
+                document.getElementById('email-list').innerHTML = 
+                    '<li>Error loading recipients. Please refresh the page.</li>';
+            }
+        }
+        
+        async function loadEmailSettings() {
+            try {
+                console.log("Fetching email settings...");
+                const response = await fetch('/api/email-settings');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error: ${response.status}`);
+                }
+                
+                const settings = await response.json();
+                console.log("Received settings:", settings);
+                
+                if (settings.service) {
+                    document.getElementById('email-service').value = settings.service;
+                }
+                
+                if (settings.user) {
+                    document.getElementById('email-user').value = settings.user;
+                }
+                
+                if (settings.pass) {
+                    document.getElementById('email-pass').value = settings.pass;
+                }
+                
+            } catch (error) {
+                console.error('Error loading email settings:', error);
+                showStatus('email-settings-status', 'Error loading email settings', false);
+            }
+        }
+        
+        async function saveEmailSettings(event) {
+            event.preventDefault();
+            
+            const service = document.getElementById('email-service').value;
+            const user = document.getElementById('email-user').value;
+            const pass = document.getElementById('email-pass').value;
+            
+            try {
+                const response = await fetch('/api/update-email-settings', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ service, user, pass })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showStatus('email-settings-status', 'Email settings saved successfully!', true);
+                } else {
+                    showStatus('email-settings-status', `Error: ${result.error}`, false);
+                }
+                
+            } catch (error) {
+                console.error('Error saving email settings:', error);
+                showStatus('email-settings-status', 'Error saving email settings', false);
+            }
+        }
+        
+        async function testEmailSettings() {
+            const service = document.getElementById('email-service').value;
+            const user = document.getElementById('email-user').value;
+            const pass = document.getElementById('email-pass').value;
+            
+            if (!service || !user || !pass) {
+                showStatus('email-settings-status', 'Please fill in all email settings fields', false);
+                return;
+            }
+            
+            try {
+                // First save the settings
+                const saveResponse = await fetch('/api/update-email-settings', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ service, user, pass })
+                });
+                
+                const saveResult = await saveResponse.json();
+                
+                if (!saveResult.success) {
+                    showStatus('email-settings-status', `Error: ${saveResult.error}`, false);
+                    return;
+                }
+                
+                // Then send a test email
+                const testResponse = await fetch('/api/miss-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: "This is a test message from Osu! Clone",
+                        missType: "test",
+                        gameMode: "test",
+                        score: 0,
+                        combo: 0
+                    })
+                });
+                
+                const testResult = await testResponse.json();
+                
+                if (testResult.success) {
+                    showStatus('email-settings-status', 'Test email sent successfully!', true);
+                } else {
+                    showStatus('email-settings-status', `Error: ${testResult.message}`, false);
+                }
+                
+            } catch (error) {
+                console.error('Error testing email settings:', error);
+                showStatus('email-settings-status', 'Error testing email settings', false);
+            }
+        }
+        
+        async function addRecipient(event) {
+            event.preventDefault();
+            
+            const nameInput = document.getElementById('recipient-name');
+            const emailInput = document.getElementById('recipient-email');
+            
+            const name = nameInput.value.trim();
+            const address = emailInput.value.trim();
+            
+            if (!name || !address) {
+                showStatus('recipient-status', 'Please fill in all fields', false);
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/add-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name, address })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showStatus('recipient-status', 'Recipient added successfully!', true);
+                    nameInput.value = '';
+                    emailInput.value = '';
+                    loadEmails();
+                } else {
+                    showStatus('recipient-status', `Error: ${result.error}`, false);
+                }
+                
+            } catch (error) {
+                console.error('Error adding recipient:', error);
+                showStatus('recipient-status', 'Error adding recipient', false);
+            }
+        }
+        
+        async function addBulkRecipients(event) {
+            event.preventDefault();
+            
+            const bulkInput = document.getElementById('bulk-emails').value;
+            const contacts = [];
+            
+            // Parse the input (name,email format, one per line)
+            bulkInput.split('\n').forEach(line => {
+                const trimmedLine = line.trim();
+                if (trimmedLine) {
+                    const parts = trimmedLine.split(',');
+                    if (parts.length >= 2) {
+                        const name = parts[0].trim();
+                        const email = parts[1].trim();
+                        
+                        // Basic email validation
+                        if (email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                            contacts.push({ name, email });
+                        }
+                    }
+                }
+            });
+            
+            if (contacts.length > 0) {
+                try {
+                    console.log("Sending bulk contacts:", contacts);
+                    const response = await fetch('/api/add-bulk-recipients', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ contacts })
+                    });
+                    
+                    const result = await response.json();
+                    console.log("Bulk add result:", result);
+                    
+                    if (result.success) {
+                        showStatus('bulk-status', `Added ${result.added} recipients successfully!`, true);
+                        document.getElementById('bulk-emails').value = '';
+                        loadEmails();
+                    } else {
+                        showStatus('bulk-status', `Error: ${result.error}`, false);
+                    }
+                } catch (error) {
+                    console.error('Error adding bulk recipients:', error);
+                    showStatus('bulk-status', 'Error adding recipients. Please try again.', false);
+                }
+            } else {
+                showStatus('bulk-status', 'No valid contacts found. Please check the format.', false);
+            }
+        }
+        
+        async function removeEmail(event) {
+            const index = event.target.dataset.index;
+            
+            try {
+                const response = await fetch('/api/remove-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ index })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    loadEmails();
+                } else {
+                    showStatus('recipient-status', `Error: ${result.error}`, false);
+                }
+                
+            } catch (error) {
+                console.error('Error removing recipient:', error);
+                showStatus('recipient-status', 'Error removing recipient', false);
+            }
+        }
+        
+        function loadMessageTemplates() {
+            // For simplicity, we'll just use some default messages
+            const defaultMessages = [
+                "Oops! I just missed a beat in Osu!",
+                "My aim is terrible today...",
+                "Another miss in Osu! Maybe I should stick to slower songs.",
+                "I swear the circle moved at the last second!",
+                "My reflexes are failing me in Osu!"
+            ];
+            
+            document.getElementById('message-templates').value = defaultMessages.join('\n');
+        }
+        
+        function saveMessageTemplates() {
+            // This is a simple implementation that just shows feedback
+            showStatus('templates-status', 'Message templates saved!', true);
+            
+            // If you want to actually use these templates in the game,
+            // you'd need to implement server-side storage and retrieval
+        }
+        
+        function showStatus(elementId, message, isSuccess) {
+            const statusDiv = document.getElementById(elementId);
+            statusDiv.textContent = message;
+            statusDiv.className = isSuccess ? 'status success' : 'status error';
+            statusDiv.style.display = 'block';
+            
+            // Hide the status after 5 seconds
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

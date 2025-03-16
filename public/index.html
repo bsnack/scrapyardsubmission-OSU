@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Osu! Clone</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <div class="score-display">Score: <span id="score">0</span></div>
+        <div class="combo-display">Combo: <span id="combo">0</span>x</div>
+        <div class="accuracy-display">Accuracy: <span id="accuracy">100.00</span>%</div>
+    </div>
+    
+    <div id="start-menu" class="menu">
+        <h1>Simple Osu! Clone</h1>
+        <p>Click the circles to the beat!</p>
+        <div class="difficulty-selector">
+            <button class="difficulty-btn selected" data-difficulty="easy">Easy</button>
+            <button class="difficulty-btn" data-difficulty="normal">Normal</button>
+            <button class="difficulty-btn" data-difficulty="hard">Hard</button>
+        </div>
+        <button id="start-button">Start Game</button>
+    </div>
+    
+    <div id="results-menu" class="menu" style="display: none;">
+        <h1>Results</h1>
+        <div class="grade" id="grade">A</div>
+        <div class="results">
+            <div>Score: <span id="final-score">0</span></div>
+            <div>Accuracy: <span id="final-accuracy">100.00</span>%</div>
+            <div>Max Combo: <span id="max-combo">0</span>x</div>
+            <div>
+                <span id="hits-300">0</span> × 300
+                <span id="hits-100">0</span> × 100
+                <span id="hits-50">0</span> × 50
+                <span id="hits-miss">0</span> × Miss
+            </div>
+        </div>
+        <button id="retry-button">Play Again</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
