@@ -88,31 +88,42 @@ const difficultySettings = {
 };
 
 // Main document ready handler - SINGLE unified handler
-// Main document ready handler - SINGLE unified handler
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("DOM loaded, initializing game...");
+    // Create the cursor elements
+    const cursor = document.createElement('div');
+    cursor.classList.add('custom-cursor');
     
-    // Detect device type first
-    detectTouchDevice();
+    const cursorDot = document.createElement('div');
+    cursorDot.classList.add('cursor-dot');
     
-    // Fix difficulty buttons
-    fixDifficultyButtons();
+    // Add the cursor elements to the document
+    document.body.appendChild(cursor);
+    document.body.appendChild(cursorDot);
     
-    // Set up all event listeners
-    setupEventListeners();
+    // Hide the default cursor
+    document.body.style.cursor = 'none';
+    document.querySelectorAll('button, a').forEach(el => {
+        el.style.cursor = 'none';
+    });
     
-    // Add keyboard instructions to menu
-    addKeyboardInstructions();
+    // Update cursor position on mousemove
+    document.addEventListener('mousemove', function(e) {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+        
+        cursorDot.style.left = e.clientX + 'px';
+        cursorDot.style.top = e.clientY + 'px';
+    });
     
-    // Add input type option to menu
-    setTimeout(addInputOptionToMenu, 100);
+    // Add click animation effect
+    document.addEventListener('mousedown', function() {
+        cursor.classList.add('cursor-active');
+    });
     
-    // Add background music
-    addBrunoMarsMusic();
-    
-    console.log("Game initialization complete");
+    document.addEventListener('mouseup', function() {
+        cursor.classList.remove('cursor-active');
+    });
 });
-
 // Setup all event listeners
 function setupEventListeners() {
     console.log("Setting up all event listeners");
